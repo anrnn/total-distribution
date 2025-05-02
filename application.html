@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="mn">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Анкет бөглөх</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      margin: 20px;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: auto;
+      color: #253169;
+    }
+    
+    form {
+      background-color: white;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      width: 100%;
+      max-width: 700px;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #253169;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border: 1px solid #e9e8e8;
+      border-radius: 8px;
+      font-size: 14px;
+      box-sizing: border-box;
+    }
+
+    .full-width {
+      grid-column: span 2;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background-color: #04bfe0;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      margin-top: 20px;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #039ab6;
+    }
+  </style>
+</head>
+<body>
+  <form id="applicationForm">
+    <h1>Анкет бөглөх</h1>
+    <div class="form-grid" id="questionFields"></div>
+    <button type="submit">Илгээх</button>
+  </form>
+
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const jobId = parseInt(urlParams.get('id'));
+
+    const jobs = JSON.parse(localStorage.getItem('jobs') || '[]');
+    const job = jobs.find(j => j.id === jobId);
+    const questionFields = document.getElementById('questionFields');
+    const form = document.getElementById('applicationForm');
+
+    function addField(html, full = false) {
+      const wrapper = document.createElement('div');
+      wrapper.className = full ? 'full-width' : '';
+      wrapper.innerHTML = html;
+      questionFields.appendChild(wrapper);
+    }
+
+    if (!job) {
+      addField('<p>Ажлын зар олдсонгүй.</p>', true);
+    } else {
+      if (job.questions.includes('urag')) {
+        addField(`<label>Ургийн овог: <input type="text" name="urag" required></label>`);
+      }
+      if (job.questions.includes('firstname')) {
+        addField(`<label>Эцэг/эхийн нэр: <input type="text" name="firstname" required></label>`);
+      }
+      if (job.questions.includes('lastname')) {
+        addField(`<label>Нэр: <input type="text" name="lastname" required></label>`);
+      }
+      if (job.questions.includes('gender')) {
+        addField(`
+          <label>Хүйс:
+            <select name="gender" required>
+              <option value="">Сонгоно уу</option>
+              <option value="Эрэгтэй">Эрэгтэй</option>
+              <option value="Эмэгтэй">Эмэгтэй</option>
+            </select>
+          </label>`);
+      }
+      if (job.questions.includes('email')) {
+        addField(`<label>И-мэйл: <input type="email" name="email" required></label>`);
+      }
+      if (job.questions.includes('phone')) {
+        addField(`<label>Утасны дугаар: <input type="text" name="phone" required></label>`);
+      }
+      if (job.questions.includes('birthday')) {
+        addField(`<label>Төрсөн өдөр: <input type="date" name="birthday" required></label>`);
+      }
+      if (job.questions.includes('education')) {
+        addField(`<label>Боловсрол: <textarea name="education" required></textarea></label>`, true);
+      }
+      if (job.questions.includes('experience')) {
+        addField(`<label>Ажлын туршлага: <textarea name="experience" required></textarea></label>`, true);
+      }
+    }
+
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const formData = new FormData(form);
+      const data = { jobId };
+
+      for (let [key, value] of formData.entries()) {
+        data[key] = value;
+      }
+
+      const applications = JSON.parse(localStorage.getItem('applications') || '[]');
+      applications.push(data);
+      localStorage.setItem('applications', JSON.stringify(applications));
+
+      alert('Анкет амжилттай илгээгдлээ!');
+      window.location.href = 'hire.html';
+    });
+  </script>
+</body>
+</html>

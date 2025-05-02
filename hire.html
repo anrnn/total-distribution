@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="mn">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ажлын байр</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .job-card {
+      background-color: #ffffff;
+      color: black;
+      padding: 10px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(219, 207, 207, 0.187);
+      margin: 20px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .hidden {
+      display: none;
+    }
+    .location-button {
+      background-color: #04bfe0;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 5px 10px;
+      margin-top: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    .location-button:hover {
+      background-color: #029bb2;
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <a href="index2.html"><img src="image/logo.png" class="logo" alt="Лого"></a>
+        <div class="menu-toggle" id="menu-toggle">&#9776;</div>
+        <nav class="nav-bar" id="nav-bar">
+            <a href="about.html">Бидний тухай</a>
+            <a href="news.html">Мэдээ</a>
+            <a href="#service">Үйлчилгээ</a>
+            <a href="https://www.zangia.mn/company/totaldistributionllc">Ажлын байр</a>
+        </nav>
+  </header>
+
+  <h1>Нээлттэй ажлын байр</h1>
+  <div style="display: flex; gap: 20px;">
+    <aside style="width: 300px;">
+      <label>Байршил:</label>
+      <select id="locationFilter" onchange="filterJobs()">
+        <option value="all">- - - - - - -</option>
+        <option value="Улаанбаатар">Улаанбаатар</option>
+        <option value="Дархан">Дархан</option>
+      </select><br><br>
+
+      <div style="margin-top: 10px;">
+        <strong>📍 Байршлаар харах:</strong>
+        <ul style="list-style: none; padding-left: 0;">
+          <li><button onclick="filterByClick('Улаанбаатар')" class="location-button">Улаанбаатар</button></li>
+          <li><button onclick="filterByClick('Дархан')" class="location-button">Дархан</button></li>
+        </ul>
+      </div>
+
+      <label style="margin-top: 20px; display: block;">Мэргэжлийн чиглэл:</label>
+      <select id="professionFilter" onchange="filterJobs()">
+        <option value="all"> - - - </option>
+        <option value="Нягтлан бодох">Нягтлан бодох</option>
+        <option value="Инженер">Инженер</option>
+      </select><br><br>
+    </aside>
+
+    <div id="jobList" style="flex: 2;"></div>
+
+    <div id="applicationFormContainer" style="display:none;">
+      <h2>Анкет бөглөх</h2>
+      <form id="applicationForm">
+        <div id="questionFields"></div>
+        <button type="submit">Илгээх</button>
+      </form>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-container">
+      <div class="footer-contact">
+        <h4>Компани</h4>
+        <p><a href="about.html">Бидний тухай</a></p>
+        <p><a href="hire.html">Ажлын байр</a></p>
+      </div>
+
+      <div class="footer-social">
+        <h4>Холбоо барих</h4>
+        <p>📞 Утас: +976 99112233</p>
+        <p>✉️ Имэйл: info@example.mn</p>
+        <p>📍 Байршил: Улаанбаатар, Монгол</p>
+        <a href="https://www.facebook.com/TotalDistributionLLC/" target="_blank"><img src="facebook.png" class="fbIcon"></a>
+      </div>
+    </div>
+    <p class="copyright">© 2025 TOTAL DISTRIBUTION</p>
+  </footer>
+
+  <script>
+    const jobs = JSON.parse(localStorage.getItem('jobs') || '[]');
+    const jobList = document.getElementById('jobList');
+    const formContainer = document.getElementById('applicationFormContainer');
+    const questionFields = document.getElementById('questionFields');
+    const form = document.getElementById('applicationForm');
+
+    function filterJobs() {
+      const selectedLocation = document.getElementById("locationFilter").value;
+      const selectedProfession = document.getElementById("professionFilter").value;
+      const cards = document.querySelectorAll(".job-card");
+
+      cards.forEach(card => {
+        const location = card.getAttribute("data-location");
+        const profession = card.getAttribute("data-profession");
+        const matchesLocation = selectedLocation === "all" || location === selectedLocation;
+        const matchesProfession = selectedProfession === "all" || profession === selectedProfession;
+
+        if (matchesLocation && matchesProfession) {
+          card.classList.remove("hidden");
+        } else {
+          card.classList.add("hidden");
+        }
+      });
+    }
+
+    function filterByClick(location) {
+      document.getElementById("locationFilter").value = location;
+      filterJobs();
+    }
+
+    function toggleDropdown(card) {
+      const dropdown = card.querySelector('.dropdown');
+      dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+    }
+
+    jobs.forEach(job => {
+      const div = document.createElement('div');
+      div.className = 'job-card';
+      div.setAttribute('data-location', job.location);
+      div.setAttribute('data-profession', job.profession);
+      div.setAttribute('onclick', 'toggleDropdown(this)');
+
+      div.innerHTML = `
+        <strong>${job.title}</strong><br>
+        <small>🗓️: ${job.deadline} &nbsp;&nbsp;&nbsp;📍: ${job.location}</small>
+        <div class="dropdown" style="display: none;">
+          <p><strong>Шаардлага:</strong></p>
+          <p>${job.requirements}</p>
+          <a href="application.html?id=${job.id}"><button>Анкет бөглөх</button></a>
+        </div>
+      `;
+      jobList.appendChild(div);
+    });
+
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const jobId = parseInt(form.getAttribute('data-job-id'));
+      const formData = new FormData(form);
+      const data = { jobId };
+
+      for (let [key, value] of formData.entries()) {
+        data[key] = value;
+      }
+
+      const applications = JSON.parse(localStorage.getItem('applications') || '[]');
+      applications.push(data);
+      localStorage.setItem('applications', JSON.stringify(applications));
+
+      alert('Анкет амжилттай илгээгдлээ!');
+      form.reset();
+      formContainer.style.display = 'none';
+    });
+  </script>
+</body>
+</html>

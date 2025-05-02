@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="mn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="style2.css">
+    <style>
+
+.hero-section {
+  margin-top: 80px;
+  background-color: #25316900; 
+    backdrop-filter: blur(10px); 
+    -webkit-backdrop-filter: blur(10px); 
+  padding: 10px 20px;
+}
+
+.nav-menu {
+  justify-content: center;
+  display: flex;
+  gap: 20px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.nav-menu li a {
+  text-decoration: none;
+  color: rgba(255, 255, 255, 0.58);
+  font-weight: 500;
+  margin-left: 50px;
+}
+
+.nav-menu li :hover {
+  border-bottom: 2px solid #ffffff9f;
+}
+
+.mission-section {
+  color: white;
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.mission-section h1 {
+  font-size: 32px;
+  margin-bottom: 10px;
+}
+
+.mission-section p {
+  font-size: 16px;
+  max-width: 800px;
+  margin: 0 auto 30px;
+  line-height: 1.6;
+}
+
+
+.cards {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.card {
+  background-color: white;
+  border-radius: 10px;
+  overflow: hidden;
+  width: 300px;
+  text-align: center;
+  transition: transform 0.2s;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+
+.card img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.card-button {
+  display: block;
+  padding: 15px;
+  color: #005eb8;
+  font-weight: bold;
+  text-decoration: none;
+  background-color: white;
+}
+
+    </style>
+</head>
+<body>
+
+    <header class="header">
+      <a href="index2.html"><img src="image/logo.png" class="logo" alt="Лого"></a>
+        <div class="menu-toggle" id="menu-toggle">&#9776;</div>
+        <nav class="nav-bar" id="nav-bar">
+            <a href="about.html">Бидний тухай</a>
+            <a href="news.html">Мэдээ</a>
+            <a href="index2.html">Үйлчилгээ</a>
+            <a href="https://www.zangia.mn/company/totaldistributionllc">Ажлын байр</a>
+        </nav>
+    </header>
+
+    <section class="hero-section">
+      <nav>
+        <ul class="nav-menu">
+          <li><a href="#" id="about-link">Бидний тухай</a></li>
+          <li><a href="#" id="mission-link">Эрхэм зорилго</a></li>
+          <li><a href="#" id="values-link">Үнэ цэн</a></li>
+        </ul>
+      </nav>
+    </section>
+    
+    <main class="mission-section" id="about-section">
+      <h1>Бидний тухай</h1>
+      <p>Манай компани нь байгаль орчныг хамгаалах, хуванцар бохирдлыг бууруулах чиглэлээр идэвхтэй үйл ажиллагаа явуулдаг...</p>
+    </main>
+    
+    <main class="mission-section" id="mission-section" style="display: none;">
+      <h1>Эрхэм зорилго</h1>
+      <p>Эрхэм зорилго нь... (write mission content here)</p>
+    </main>
+    
+    <main class="mission-section" id="values-section" style="display: none;">
+      <h1>Үнэ цэн</h1>
+      <p>Үнэт зүйлс нь... (write values content here)</p>
+    </main>    
+      
+      <div class="cards">
+        <div class="card">
+          <img src="image/medee2.png" alt="image">
+          <a href="#" class="card-button"></a>
+        </div>
+        <div class="card">
+          <img src="image/medee1.png" alt="image">
+          <a href="#" class="card-button"></a>
+        </div>
+      </div>
+    </main>
+
+    <footer>
+      <div class="footer-container">
+    
+        <div class="footer-contact">
+          <h4>Компани</h4>
+          <p><a href="about.html">Бидний тухай</a></p>
+          <p></p><a href="hire.html">Ажлын байр</a></p>
+        </div>
+    
+        <div class="footer-social">
+          <h4>Холбоо барих</h4>
+          <p>📞 Утас: +976 99112233</p>
+          <p>✉️ Имэйл: info@example.mn</p>
+          <p>📍 Байршил: Улаанбаатар, Монгол</p>
+          <a href="https://www.facebook.com/TotalDistributionLLC/" target="_blank"><img src="facebook.png" class="fbIcon"></a><br>
+        </div>
+      </div>
+      <p class="copyright">© 2025 TOTAL DISTRIBUTION</p>
+    </footer>
+    <script>
+      document.getElementById('about-link').addEventListener('click', function(event) {
+  event.preventDefault();
+  document.getElementById('about-section').style.display = 'block';
+  document.getElementById('mission-section').style.display = 'none';
+  document.getElementById('values-section').style.display = 'none';
+});
+
+document.getElementById('mission-link').addEventListener('click', function(event) {
+  event.preventDefault();
+  document.getElementById('mission-section').style.display = 'block';
+  document.getElementById('about-section').style.display = 'none';
+  document.getElementById('values-section').style.display = 'none';
+});
+
+document.getElementById('values-link').addEventListener('click', function(event) {
+  event.preventDefault();
+  document.getElementById('values-section').style.display = 'block';
+  document.getElementById('about-section').style.display = 'none';
+  document.getElementById('mission-section').style.display = 'none';
+});
+
+    </script>
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="mn">
+<head>
+  <meta charset="UTF-8" />
+  <title>Ажлын байр нэмэх - Total Distribution</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding-left: 270px;
+      background-color: #f4f6f8;
+    }
+    .sidebar {
+      width: 250px;
+      background-color: #2c3e50;
+      color: #ecf0f1;
+      height: 100vh;
+      position: fixed;
+      top: 0;
+      left: 0;
+      display: flex;
+      flex-direction: column;
+      padding: 20px;
+    }
+    .sidebar .logo img {
+      width: 100%;
+      max-width: 150px;
+      margin: 0 auto 20px;
+    }
+    .sidebar ul {
+      list-style: none;
+      padding: 0;
+    }
+    .sidebar ul li {
+      margin: 15px 0;
+    }
+    .sidebar ul li a {
+      color: #ecf0f1;
+      text-decoration: none;
+      font-size: 1rem;
+      display: flex;
+      align-items: center;
+      padding: 10px 15px;
+      border-radius: 5px;
+      transition: background-color 0.3s ease;
+    }
+    .sidebar ul li a:hover {
+      background-color: #34495e;
+    }
+    .icon-holder {
+      margin-right: 10px;
+    }
+    main {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 30px;
+    }
+    h1, h3 {
+      color: #253169;
+    }
+    form {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+    form label {
+      display: block;
+      margin: 15px 0 5px;
+    }
+    form input, form textarea, form select {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    button {
+      margin-top: 15px;
+      background-color: #04bfe0;
+      color: white;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #253169;
+    }
+    .folder-questions {
+      margin-left: 20px;
+      margin-top: 10px;
+    }
+    .job-list {
+      margin-top: 30px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+    .job-item {
+      background-color: white;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 15px;
+      width: 100%;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+      position: relative;
+    }
+    .delete-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: #e74c3c;
+      color: white;
+      border: none;
+      border-radius: 3px;
+      padding: 5px 8px;
+      cursor: pointer;
+    }
+    .delete-btn:hover {
+      background: #c0392b;
+    }
+  </style>
+</head>
+<body>
+  <nav class="sidebar">
+    <div class="logo">
+      <a href="dashboard.html"><img src="image\Logo.png" alt="Logo"></a>
+    </div>
+    <ul>
+      <li><a href="admin.html"><span class="icon-holder">🏠</span> Ажлын байр нэмэх</a></li>
+      <li><a href="admin_applications.html"><span class="icon-holder">📦</span> Бөглөгдсөн анкетийг харах</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    <h1>Ажлын байр нэмэх</h1>
+    <form id="jobForm">
+      <label>Ажлын нэр:
+        <input type="text" id="title" required />
+      </label>
+      <label>Ажлын шаардлага:
+        <textarea id="requirements" required></textarea>
+      </label>
+      <label>Анкет авах эцсийн хугацаа:
+        <input type="date" id="deadline" required />
+      </label>
+      <label>Ажлын байршлыг оруулна уу:
+        <select id="location" required>
+          <option value="Улаанбаатар">Улаанбаатар</option>
+          <option value="Дархан">Дархан</option>
+          <option value="Эрдэнэт">Эрдэнэт</option>
+        </select>
+      </label>
+
+      <div class="question-folders">
+        <label><input type="checkbox" id="personalDetailsFolder"> Хувийн мэдээлэл</label>
+        <div id="personalDetailsQuestions" class="folder-questions" style="display:none;">
+          <label><input type="checkbox" name="questions" value="urag"> Ургийн овог</label>
+          <label><input type="checkbox" name="questions" value="firstname"> Эцэг/эхийн нэр</label>
+          <label><input type="checkbox" name="questions" value="lastname"> Нэр</label>
+          <label><input type="checkbox" name="questions" value="gender"> Хүйс </label>
+          <label><input type="checkbox" name="questions" value="email"> И-мэйл</label>
+          <label><input type="checkbox" name="questions" value="phone"> Утасны дугаар</label> 
+          <label><input type="checkbox" name="questions" value="birthdate"> Төрсөн огноо</label>
+          <label><input type="checkbox" name="questions" value="registration"> Регистрийн дугаар</label>
+          <label><input type="checkbox" name="questions" value="marrage"> Гэрлэлтийн байдал</label>
+          <label><input type="checkbox" name="questions" value="driverLicense"> Жолооны үнэмлэх</label> 
+        </div>
+
+        <label><input type="checkbox" id="experienceFolder"> Ажлын туршлага</label>
+        <div id="experienceQuestions" class="folder-questions" style="display:none;">
+          <label><input type="checkbox" name="questions" value="education"> Албан тушаал</label>
+          <label><input type="checkbox" name="questions" value="company"> Компаний нэр</label>
+          <label><input type="checkbox" name="questions" value="startDate"> Эхлэх огноо</label>
+          <label><input type="checkbox" name="questions" value="endDate"> Дуусах огноо</label>
+          <label><input type="checkbox" name="questions" value="responsibilities"> Хариуцсан ажил</label>
+          <label><input type="checkbox" name="questions" value="experience"> Ажлын туршлага</label>
+        </div>
+      </div>
+
+      <button type="submit">Ажлын байр нэмэх</button>
+    </form>
+
+    <h3>Өмнө нэмэгдсэн ажлын байрнууд</h3>
+    <div id="existingJobsList" class="job-list"></div>
+  </main>
+
+  <script>
+    document.querySelector('#personalDetailsFolder').addEventListener('change', function() {
+      const isChecked = this.checked;
+      const container = document.querySelector('#personalDetailsQuestions');
+      container.style.display = isChecked ? 'block' : 'none';
+      container.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = isChecked);
+    });
+
+    document.querySelector('#experienceFolder').addEventListener('change', function() {
+      const isChecked = this.checked;
+      const container = document.querySelector('#experienceQuestions');
+      container.style.display = isChecked ? 'block' : 'none';
+      container.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = isChecked);
+    });
+
+    const jobForm = document.getElementById('jobForm');
+    const existingJobsList = document.getElementById('existingJobsList');
+
+    jobForm.addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      const title = document.getElementById('title').value.trim();
+      const requirements = document.getElementById('requirements').value.trim();
+      const deadline = document.getElementById('deadline').value;
+      const location = document.getElementById('location').value;
+
+      const today = new Date().toISOString().split("T")[0];
+      if (deadline < today) {
+        alert("Өнгөрсөн хугацаатай ажлын байр нэмэх боломжгүй!");
+        return;
+      }
+
+      const selectedQuestions = Array.from(document.querySelectorAll('input[name="questions"]:checked')).map(q => q.value);
+
+      const job = {
+        id: Date.now(),
+        title,
+        requirements,
+        deadline,
+        location,
+        questions: selectedQuestions
+      };
+
+      const jobs = JSON.parse(localStorage.getItem('jobs') || '[]');
+      jobs.push(job);
+      localStorage.setItem('jobs', JSON.stringify(jobs));
+
+      alert('Ажлын байр амжилттай нэмэгдлээ!');
+      this.reset();
+      displayJobs();
+    });
+
+    function deleteJob(id) {
+      const jobs = JSON.parse(localStorage.getItem('jobs') || '[]');
+      const updatedJobs = jobs.filter(job => job.id !== id);
+      localStorage.setItem('jobs', JSON.stringify(updatedJobs));
+      displayJobs();
+    }
+
+    function displayJobs() {
+      const jobs = JSON.parse(localStorage.getItem('jobs') || '[]');
+      existingJobsList.innerHTML = '';
+
+      if (jobs.length === 0) {
+        existingJobsList.innerHTML = "<p>Одоогоор ажлын байр бүртгэгдээгүй байна.</p>";
+        return;
+      }
+
+      jobs.forEach(job => {
+        const div = document.createElement('div');
+        div.className = 'job-item';
+        div.innerHTML = `
+          <button class="delete-btn" onclick="deleteJob(${job.id})">Устгах</button>
+          <strong>${job.title}</strong><br>
+          <small>${job.requirements}</small>
+          <p><strong>📅 Хугацаа:</strong> ${job.deadline}</p>
+          <p><strong>📍 Байршил:</strong> ${job.location}</p>
+          <p><strong>Асуултууд:</strong> ${job.questions.join(', ') || 'Байхгүй'}</p>
+        `;
+        existingJobsList.appendChild(div);
+      });
+    }
+
+    displayJobs();
+  </script>
+</body>
+</html>

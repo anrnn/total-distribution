@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="mn">
+<head>
+  <meta charset="UTF-8" />
+  <title>Анкетууд - Total Distribution</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding-left: 270px;
+      background-color: #f4f6f8;
+    }
+    .sidebar {
+      width: 250px;
+      background-color: #2c3e50;
+      color: #ecf0f1;
+      height: 100vh;
+      position: fixed;
+      top: 0;
+      left: 0;
+      display: flex;
+      flex-direction: column;
+      padding: 20px;
+    }
+    .sidebar .logo img {
+      width: 100%;
+      max-width: 150px;
+      margin: 0 auto 20px;
+    }
+    .sidebar ul {
+      list-style: none;
+      padding: 0;
+    }
+    .sidebar ul li {
+      margin: 15px 0;
+    }
+    .sidebar ul li a {
+      color: #ecf0f1;
+      text-decoration: none;
+      font-size: 1rem;
+      display: flex;
+      align-items: center;
+      padding: 10px 15px;
+      border-radius: 5px;
+      transition: background-color 0.3s ease;
+    }
+    .sidebar ul li a:hover {
+      background-color: #34495e;
+    }
+
+    .icon-holder {
+      margin-right: 10px;
+    }
+
+    h1 {
+      color: #253169;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      background: white;
+    }
+    table, th, td {
+      border: 1px solid #ccc;
+    }
+    th, td {
+      padding: 10px;
+      text-align: left;
+    }
+    thead {
+      background-color: #253169;
+      color: white;
+    }
+    tr:nth-child(even) {
+      background-color: #f2f2f2;
+    }
+    button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      background-color: #04bfe0;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+    button:hover {
+      background-color: #253169;
+    }
+    .details-box {
+      background: #fff;
+      padding: 20px;
+      margin-bottom: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+  </style>
+</head>
+<body>
+  <nav class="sidebar">
+    <div class="logo">
+      <a href="dashboard.html"><img src="image\Logo.png" alt="Logo"></a>
+    </div>
+    <ul>
+      <li><a href="admin.html"><span class="icon-holder">🏠</span> Ажлын байр нэмэх</a></li>
+      <li><a href="admin_applications.html"><span class="icon-holder">📦</span> Бөглөгдсөн анкетийг харах</a></li>
+    </ul>
+  </nav>
+
+  <h1>Хэрэглэгчдийн анкетууд</h1>
+
+  <table id="applicationsTable">
+    <thead>
+      <tr>
+        <th>Ажлын байр</th>
+        <th>Овог нэр</th>
+        <th>И-мэйл</th>
+        <th>Үйлдэл</th>
+      </tr>
+    </thead>
+    <tbody id="applicationsList"></tbody>
+  </table>
+
+  <button onclick="downloadExcel()">Анкетуудыг татах</button>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.2/xlsx.full.min.js"></script>
+  <script>
+    function deleteApplication(index) {
+  if (confirm('Та энэ анкетыг устгахдаа итгэлтэй байна уу?')) {
+    applications.splice(index, 1);
+    localStorage.setItem('applications', JSON.stringify(applications));
+    location.reload();
+  }
+}
+
+    const applications = JSON.parse(localStorage.getItem('applications') || '[]');
+    const jobs = JSON.parse(localStorage.getItem('jobs') || '[]');
+    const applicationsList = document.getElementById('applicationsList');
+
+    if (applications.length === 0) {
+      const row = document.createElement('tr');
+      row.innerHTML = `<td colspan="4">Одоогоор анкет бөглөсөн хэрэглэгч байхгүй байна.</td>`;
+      applicationsList.appendChild(row);
+    } else {
+      applications.forEach((app, index) => {
+        const job = jobs.find(j => j.id === app.jobId);
+        const row = document.createElement('tr');
+
+        row.innerHTML = `
+          <td>${job ? job.title : 'Тодорхойгүй'}</td>
+          <td>${app.fullname || ''}</td>
+          <td>${app.email || ''}</td>
+          <td><button onclick="viewApplication(${index})">Дэлгэрэнгүй</button>
+          <button onclick="deleteApplication(${index})" style="margin-left: 10px; background-color: #e74c3c;">Устгах</button></td>`;
+        applicationsList.appendChild(row);
+      });
+    }
+
+    function viewApplication(index) {
+      const app = applications[index];
+      const job = jobs.find(j => j.id === app.jobId);
+
+      if (!app || !job) return alert('Анкет олдсонгүй');
+
+      let details = `<div class="details-box">`;
+      details += `<h3>${job.title} - Анкет</h3>`;
+      details += `<p><strong>Ургийн овог:</strong> ${app.urag || 'Мэдээлэл байхгүй'}</p>`;
+      details += `<p><strong>Эцэг/эхийн нэр:</strong> ${app.firstname || 'Мэдээлэл байхгүй'}</p>`;
+      details += `<p><strong>Нэр:</strong> ${app.lastname || 'Мэдээлэл байхгүй'}</p>`;
+      details += `<p><strong>Хүйс:</strong> ${app.gender || 'Мэдээлэл байхгүй'}</p>`;
+      details += `<p><strong>И-мэйл:</strong> ${app.email || 'Мэдээлэл байхгүй'}</p>`;
+      details += `<p><strong>Утасны дугаар:</strong> ${app.phone || 'Мэдээлэл байхгүй'}</p>`;
+      details += `<p><strong>Төрсөн өдөр:</strong> ${app.birthday || 'Мэдээлэл байхгүй'}</p>`;
+      details += `<p><strong>Боловсрол:</strong> ${app.education || 'Мэдээлэл байхгүй'}</p>`;
+      details += `<p><strong>Ажлын туршлага:</strong> ${app.experience || 'Мэдээлэл байхгүй'}</p>`;
+
+      document.body.insertAdjacentHTML('afterbegin', details);
+    }
+
+    function downloadExcel() {
+      const data = applications.map(app => {
+        const job = jobs.find(j => j.id === app.jobId);
+        return {
+          "Ажлын байр": job ? job.title : 'Тодорхойгүй',
+          "Овог нэр": app.fullname || '',
+          "И-мэйл": app.email || '',
+          "Боловсрол": app.education || '',
+          "Ажлын туршлага": app.experience || ''
+        };
+      });
+
+      const ws = XLSX.utils.json_to_sheet(data);
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, "Анкетууд");
+
+      const today = new Date().toISOString().slice(0, 10);
+      XLSX.writeFile(wb, `Анкетууд-${today}.xlsx`);
+    }
+  </script>
+</body>
+</html>

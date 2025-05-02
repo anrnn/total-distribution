@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="mn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Нэвтрэх</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #f8f8f8;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: #121212;
+        }
+
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            width: 400px;
+            padding: 20px;
+        }
+
+        .sign {
+            flex: 1;
+            min-width: 300px;
+            padding: 20px;
+            background: #fff;
+            border-left: 1px solid #eee;
+            opacity: 0;
+            transform: translateX(50px);
+            transition: all 1s ease;
+        }
+
+        h2 {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 24px;
+        }
+
+        form input, form textarea {
+            width: 100%;
+            padding: 14px;
+            margin-bottom: 16px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .btn {
+            width: 100%;
+            background: #253169;
+            color: #fff;
+            border: none;
+            padding: 14px;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .btn:hover {
+            background: #1e2857;
+        }
+
+        .show {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="sign">
+            <h2>Нэвтрэх</h2>
+            <form>
+                <input type="text" placeholder="Нэвтрэх нэр*" aria-label="Нэвтрэх нэр" required>
+                <input type="password" placeholder="Нууц үг*" aria-label="Нууц үг" required>
+                <button type="submit" class="btn">Нэвтрэх</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const sign = document.querySelector('.sign');
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    sign.classList.add('show');
+                }
+            });
+        }, {
+            threshold: 0.2
+        });
+
+        observer.observe(document.querySelector('.container'));
+    </script>
+
+</body>
+</html>

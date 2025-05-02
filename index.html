@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="mn">
+<head>
+  <meta charset="UTF-8">
+  <title>OneDrive Demo</title>
+</head>
+<body>
+  <h1 id="title">Уншиж байна...</h1>
+  <p id="description">Түр хүлээнэ үү...</p>
+  <img id="myImage" width="400" alt="Зураг ачааллаж байна...">
+
+  <script>
+    fetch("https://totaldstr-my.sharepoint.com/personal/delgermaa_o_tdist_mn/_layouts/15/download.aspx?SourceUrl=https://totaldstr-my.sharepoint.com/:u:/g/personal/delgermaa_o_tdist_mn/EVMhvESIOzJKm1mwuhapZN8BiV_tNQAi7TuqHusbbwqb3w")
+      .then(response => response.json())
+      .then(data => {
+        document.getElementById("title").innerText = data.title;
+        document.getElementById("description").innerText = data.description;
+      })
+      .catch(error => {
+        console.error("Алдаа гарлаа:", error);
+      });
+
+    document.getElementById('myImage').src = 'https://totaldstr-my.sharepoint.com/:i:/g/personal/delgermaa_o_tdist_mn/Eb8_cyexXMJJpfAoqHbxFlAB5hnxA3Tl0E4a7q0iik0nFA?download=1';
+  </script>
+</body>
+</html>
